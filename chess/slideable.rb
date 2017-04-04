@@ -1,9 +1,11 @@
+require 'byebug'
+
 module Slideable
 
-  def moves(pos)
+  def moves
     pos_moves = []
     move_dirs.each do |dir|
-      new_move = pos
+      new_move = @pos
       while @board.in_bounds?(new_move)
         new_move = grow_unblocked_moves_in_dir(new_move, dir)
         pos_moves << new_move if @board.in_bounds?(new_move)
@@ -13,12 +15,12 @@ module Slideable
   end
 
   def move_dirs
-    case self.class
-    when Queen
+    p self.is_a?(Rook)
+    if self.is_a?(Queen)
       horizontal_dirs + diagonal_dirs
-    when Bishop
+    elsif self.is_a?(Bishop)
       diagonal_dirs
-    when Rook
+    elsif self.is_a?(Rook)
       horizontal_dirs
     end
   end
