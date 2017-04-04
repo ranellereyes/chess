@@ -59,4 +59,18 @@ class Board
   def in_bounds?(pos)
     pos.all? { |coordinate| coordinate.between?(0, 7) }
   end
+
+  def in_check?(side)
+    opposing_side = side == :white ? :black : :white
+    king = nil
+    opposing_pieces = @grid.flatten.select do |piece|
+      king = piece if piece.side == side && piece.is_a?(King)
+      piece.side == opposing_side
+    end
+
+    opposing_pieces.any? do |piece|
+      piece.moves.include?(king.pos)
+    end
+
+  end
 end
