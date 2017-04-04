@@ -5,8 +5,9 @@ class Rook < Piece
   include Slideable
   attr_reader :symbol
 
-  def initialize(board, pos)
+  def initialize(board, pos, side)
     x, _ = pos
-    @symbol = x < 2 ? "♖" : "♜"
+    @symbol = side == :white ? "♖" : "♜"
+    super
   end
 end

@@ -1,10 +1,11 @@
 class Piece
-  attr_reader :pos, :board, :side
+  attr_accessor :side, :pos
+  attr_reader :board
 
-  def initialize(board, pos)
+  def initialize(board, pos, side)
     @board = board
     @pos = pos
     x, _ = pos
-    @side = x < 2 ? :white : :black
+    @side = side
   end
 end

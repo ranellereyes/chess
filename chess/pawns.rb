@@ -4,11 +4,11 @@ require 'byebug'
 class Pawns < Piece
   attr_reader :symbol
 
-  def initialize(board, pos)
+  def initialize(board, pos, side)
     # debugger
     x, _ = pos
-    @symbol = x < 2 ? "♙" : "♟"
-    super(board, pos)
+    @symbol = side == :white ? "♙" : "♟"
+    super
   end
 
   def moves

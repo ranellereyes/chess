@@ -1,6 +1,6 @@
 require_relative 'piece'
 require_relative 'load'
-
+require 'byebug'
 class Board
 
   attr_accessor :grid
@@ -21,26 +21,29 @@ class Board
   end
 
   def def_board_setup
-    null_row = Array.new(8) { NullPiece.instance }
     @grid.map!.with_index do |row, i|
+      side = (i < 4 ? :white : :black)
+      puts "i: #{i}, side: #{side}"
       case i
       when 0, 7
         back_row = [
-          Rook.new(self, [i, 0]),
-          Knight.new(self, [i, 1]),
-          Bishop.new(self, [i, 2]),
-          Queen.new(self, [i, 3]),
-          King.new(self, [i, 4]),
-          Bishop.new(self, [i, 5]),
-          Knight.new(self, [i, 6]),
-          Rook.new(self, [i, 7])
+          Rook.new(self, [i, 0], side),
+          Knight.new(self, [i, 1], side),
+          Bishop.new(self, [i, 2], side),
+          Queen.new(self, [i, 3], side),
+          King.new(self, [i, 4], side),
+          Bishop.new(self, [i, 5], side),
+          Knight.new(self, [i, 6], side),
+          Rook.new(self, [i, 7], side)
         ]
         row = back_row
+        # p side
       when 1, 6
         pawn_row = []
-        0.upto(7) { |j| pawn_row << Pawns.new(self, [i, j]) }
+        0.upto(7) { |j| pawn_row << Pawns.new(self, [i, j], side) }
         row = pawn_row
       when 2,3,4,5
+        null_row = Array.new(8) { NullPiece.instance }
         row = null_row
       end
     end
@@ -49,9 +52,11 @@ class Board
   def move_piece(start_pos, end_pos)
     begin
       self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+      self[end_pos].pos = end_pos
+      self[start_pos].pos = start_pos
     rescue
-      raise "There is no piece at start position" if self[start_pos].nil?
-      raise "The piece cannot move to position" unless self[end_pos].nil?
+      raise "There is no piece at start position" if self[start_pos] == NullPiece.instance
+      raise "The piece cannot move to position" unless self[end_pos] == NullPiece.instance
       retry
     end
   end
@@ -71,6 +76,21 @@ class Board
     opposing_pieces.any? do |piece|
       piece.moves.include?(king.pos)
     end
+  end
 
+  def self.dup(board)
+    new_board = Board.new
+    board.grid.each_index do |row|
+      board.grid.each_index do |col|
+        new_board[[row,col]] = NullPiece.instance
+        next if board[[row,col]] == NullPiece.instance
+        piece = board[[row,col]]
+        pos = piece.pos
+        side = piece.side
+        new_piece = piece.class.new(new_board,pos,side)
+        new_board[[row,col]] = new_piece
+      end
+    end
+    new_board
   end
 end
