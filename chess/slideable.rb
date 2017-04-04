@@ -8,7 +8,12 @@ module Slideable
       new_move = @pos
       while @board.in_bounds?(new_move)
         new_move = grow_unblocked_moves_in_dir(new_move, dir)
-        pos_moves << new_move if @board.in_bounds?(new_move)
+        if @board[new_move].side == self.side
+          break
+        else
+          pos_moves << new_move if @board.in_bounds?(new_move)
+          break unless @board[new_move] == NullPiece.instance
+        end
       end
     end
     pos_moves

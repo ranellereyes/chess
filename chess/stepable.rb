@@ -7,7 +7,8 @@ module Stepable
     x, y = @pos
     move_dirs.each do |(dx, dy)|
       new_move = [x +dx, y + dy]
-      pos_moves << new_move if @board.in_bounds?(new_move)
+      pos_moves << new_move if @board.in_bounds?(new_move) &&
+        @board[new_move].side != self.side
     end
     pos_moves
   end

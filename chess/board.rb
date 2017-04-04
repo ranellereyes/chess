@@ -1,4 +1,5 @@
 require_relative 'piece'
+require_relative 'load'
 
 class Board
 
@@ -20,17 +21,27 @@ class Board
   end
 
   def def_board_setup
-    null_rows = [2,3,4,5]
-    # back_row = [Rook.new, Knight.new, Bishop.new, Queen.new, King.new, Bishop.new, Knight.new, Rook.new]
-    back_row = Array.new(8) {Piece.new(@board,[0,0])}
+    null_row = Array.new(8) { NullPiece.instance }
     @grid.map!.with_index do |row, i|
       case i
       when 0, 7
+        back_row = [
+          Rook.new(self, [i, 0]),
+          Knight.new(self, [i, 1]),
+          Bishop.new(self, [i, 2]),
+          Queen.new(self, [i, 3]),
+          King.new(self, [i, 4]),
+          Bishop.new(self, [i, 5]),
+          Knight.new(self, [i, 6]),
+          Rook.new(self, [i, 7])
+        ]
         row = back_row
       when 1, 6
-        row = Array.new(8) { Piece.new(@board,[0,0]) }
+        pawn_row = []
+        0.upto(7) { |j| pawn_row << Pawns.new(self, [i, j]) }
+        row = pawn_row
       when 2,3,4,5
-        row = Array.new(8) { nil }
+        row = null_row
       end
     end
   end
