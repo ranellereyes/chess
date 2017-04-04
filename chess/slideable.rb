@@ -15,7 +15,6 @@ module Slideable
   end
 
   def move_dirs
-    p self.is_a?(Rook)
     if self.is_a?(Queen)
       horizontal_dirs + diagonal_dirs
     elsif self.is_a?(Bishop)

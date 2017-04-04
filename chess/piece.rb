@@ -1,9 +1,9 @@
 class Piece
-  attr_reader :value, :pos, :board
+  attr_reader :pos, :board, :side
 
-  def initialize(value = "Vu", board, pos)
-    @value = "v"
+  def initialize(board, pos)
     @board = board
     @pos = pos
+    @side = x < 2 ? :white : :black
   end
 end

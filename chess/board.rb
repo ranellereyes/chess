@@ -22,13 +22,13 @@ class Board
   def def_board_setup
     null_rows = [2,3,4,5]
     # back_row = [Rook.new, Knight.new, Bishop.new, Queen.new, King.new, Bishop.new, Knight.new, Rook.new]
-    back_row = Array.new(8) {Piece.new(nil,@board,[0,0])}
+    back_row = Array.new(8) {Piece.new(@board,[0,0])}
     @grid.map!.with_index do |row, i|
       case i
       when 0, 7
         row = back_row
       when 1, 6
-        row = Array.new(8) { Piece.new(nil, @board,[0,0]) }
+        row = Array.new(8) { Piece.new(@board,[0,0]) }
       when 2,3,4,5
         row = Array.new(8) { nil }
       end

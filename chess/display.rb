@@ -17,7 +17,7 @@ class Display
     puts "  0 1 2 3 4 5 6 7"
     @board.grid.each_with_index do |row, i|
       puts "#{i} #{row.map.with_index do |vu, j|
-        current_vu = vu.nil? ? '_' : vu.value
+        current_vu = vu.nil? ? '_' : vu.symbol
         if @cursor.cursor_pos == [i,j]
           current_vu.colorize(:background => :light_blue, :color => :white)
         else
