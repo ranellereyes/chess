@@ -14,8 +14,8 @@ class Pawns < Piece
   def moves
     pos_moves = []
     x, y = @pos
-    side_attacks = side_attacks.reject do |(dx, dy)|
-      @board[x + dx, y + dy] == NullPiece.instance
+    attacks = side_attacks.reject do |(dx, dy)|
+      @board[[x + dx, y + dy]] == NullPiece.instance
     end
     move_dirs = side_attacks + forward_steps
     move_dirs.each do |(dx, dy)|
@@ -32,7 +32,7 @@ class Pawns < Piece
   end
 
   def forward_dir
-    @side == :white ? [-1, 0] : [1, 0]
+    @side == :white ? [1, 0] : [-1, 0]
   end
 
   def forward_steps
