@@ -8,5 +8,6 @@ class Bishop < Piece
   def initialize(board, pos)
     x, _ = pos
     @symbol = x < 2 ? "♗" : "♝"
+    super
   end
 end
