@@ -5,15 +5,15 @@ module Slideable
   def moves
     pos_moves = []
     move_dirs.each do |dir|
-      new_move = @pos
+      new_move = grow_unblocked_moves_in_dir(@pos, dir)
       while @board.in_bounds?(new_move)
-        new_move = grow_unblocked_moves_in_dir(new_move, dir)
         if @board[new_move].side == self.side
           break
         else
           pos_moves << new_move if @board.in_bounds?(new_move)
           break unless @board[new_move] == NullPiece.instance
         end
+        new_move = grow_unblocked_moves_in_dir(new_move, dir)
       end
     end
     pos_moves

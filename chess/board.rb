@@ -51,9 +51,14 @@ class Board
 
   def move_piece(start_pos, end_pos)
     begin
-      self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
-      self[end_pos].pos = end_pos
-      self[start_pos].pos = start_pos
+      if self[end_pos] == NullPiece.instance
+        self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+        self[end_pos].pos = end_pos
+        self[start_pos].pos = start_pos
+      else
+          self[end_pos], self[start_pos]= self[start_pos], NullPiece.instance
+          self[end_pos].pos = end_pos
+      end
     rescue
       raise "There is no piece at start position" if self[start_pos] == NullPiece.instance
       raise "The piece cannot move to position" unless self[end_pos] == NullPiece.instance
@@ -75,6 +80,21 @@ class Board
 
     opposing_pieces.any? do |piece|
       piece.moves.include?(king.pos)
+    end
+  end
+
+  def check_mate?(side)
+    defending_pieces = @grid.flatten.select do |piece|
+      piece.side == side
+    end
+
+    defending_pieces.all? do |piece|
+      orig_pos = piece.pos
+      piece.moves.all? do |move|
+        dup_board = Board.dup(self)
+        dup_board.move_piece(orig_pos, move)
+        dup_board.in_check?(side)
+      end
     end
   end
 
