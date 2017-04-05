@@ -11,6 +11,7 @@ require_relative 'slideable.rb'
 require_relative 'stepable.rb'
 require_relative 'king.rb'
 require_relative 'knight.rb'
+require_relative 'game.rb'
 
 
 # if __FILE__ == $0
