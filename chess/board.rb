@@ -23,7 +23,7 @@ class Board
   def def_board_setup
     @grid.map!.with_index do |row, i|
       side = (i < 4 ? :white : :black)
-      puts "i: #{i}, side: #{side}"
+      # puts "i: #{i}, side: #{side}"
       case i
       when 0, 7
         back_row = [
